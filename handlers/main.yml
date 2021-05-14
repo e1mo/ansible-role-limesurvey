@@ -1,0 +1,46 @@
+---
+- name: limesurvey install
+  command:
+    argv:
+      - php
+      - '{{ limesurvey_path }}/application/commands/console.php'
+      - install
+      - admin
+      - password
+      - admin
+      - admin@example.org
+    chdir: '{{ limesurvey_path }}/application/commands/'
+  ignore_errors: true
+  when: limesurvey_deploy_config
+  become: true
+  become_user: '{{ limesurvey_user }}'
+
+- name: limesurvey updatedb
+  command:
+    argv:
+      - php
+      - '{{ limesurvey_path }}/application/commands/console.php'
+      - updatedb
+    chdir: '{{ limesurvey_path }}/application/commands/'
+  when: limesurvey_deploy_config
+  become: true
+  become_user: '{{ limesurvey_user }}'
+  listen: limesurvey install
+
+- name: clear limesurvey cache
+  file:
+    path: '{{ limesurvey_path }}/tmp/runtime/cache'
+    state: absent
+
+- name: systemd daemon reload
+  systemd:
+    daemon_reload: true
+
+- name: systemd enable now timer
+  systemd:
+    enabled: true
+    state: restarted
+    name: '{{ limesurvey_systemd_unit_name }}.{{ item }}'
+  with_items:
+    - service
+    - timer

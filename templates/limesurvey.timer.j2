@@ -1,0 +1,9 @@
+[Unit]
+Description=Run cronjob for limesurvey at {{ limesurvey_path }}
+
+[Timer]
+OnCalendar=minutely
+Persistent=true
+
+[Install]
+WantedBy=timers.target

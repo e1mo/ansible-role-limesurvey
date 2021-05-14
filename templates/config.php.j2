@@ -1,0 +1,55 @@
+<?php
+
+if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+$config = [];
+
+$config['components'] = [];
+$config['components']['db'] = [
+  'connectionString' => '{{ limesurvey_db_type }}:host={{ limesurvey_db_host }};port={{ limesurvey_db_port }};user={{limesurvey_db_user}};password={{ limesurvey_db_pass }};dbname={{ limesurvey_db_name }};',
+  'emulatePrepare' => true,
+  'username' => '{{ limesurvey_db_user }}',
+  'password' => '{{ limesurvey_db_pass }}',
+  'charset' => '{{ limesurvey_db_charset }}',
+  'tablePrefix' => '{{ limesurvey_db_table_prefix }}',
+];
+
+$config['components']['urlManager'] = [
+  'urlFormat' => 'path',
+  'rules' => array(),
+  'showScriptName' => false,
+];
+
+
+$config['config'] = [];
+
+$config['config']['sitename'] = '{{ limesurvey_site_name }}';
+$config['config']['force_ssl'] = {{ 'true' if limesurvey_force_ssl else 'false' }};
+$config['config']['siteadminname'] = '{{ limesurvey_site_admin_name }}';
+$config['config']['siteadminemail'] = '{{ limesurvey_site_admin_mail }}';
+$config['config']['siteadminbounce'] = '{{ limesurvey_site_admin_bounce }}';
+
+$config['config']['emailmethod'] = '{{ limesurvey_email_method }}';
+$config['config']['emailsmtphost'] = '{{ limesurvey_email_smtp_host }}';
+$config['config']['emailsmtpssl'] = '{{ limesurvey_email_smtp_ssl }}';
+$config['config']['emailsmtpuser'] = '{{ limesurvey_email_smtp_user }}';
+$config['config']['emailsmtppassword'] = '{{ limesurvey_email_smtp_pass }}';
+
+{% if limesurvey_bounces_enabled %}
+$config['config']['bounceaccounthost'] = '{{ limesurvey_bounce_host }}';
+$config['config']['bounceaccounttype'] = '{{ limesurvey_bounce_type | upper }}';
+$config['config']['bounceencryption'] = '{{ limesurvey_bounce_encryption }}';
+$config['config']['bounceaccountuser'] = '{{ limesurvey_bounce_user }}';
+$config['config']['bounceaccountpass'] = '{{ limesurvey_bounce_pass }}';
+{% endif %}
+
+$config['config']['maxemails'] = {{ limesurvey_email_max_mails }};
+
+
+{% if limesurvey_extra_config is defined %}
+{%   for conf in limesurvey_extra_config  %}
+$config['config']['{{ conf.name }}'] = {{ conf.value }};
+{%   endfor %}
+{% endif %}
+
+return $config;

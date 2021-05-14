@@ -1,0 +1,10 @@
+---
+- name: Download LimeSurvey sources
+  include: download.yml
+
+- name: Create limesurvey config
+  include: config.yml
+  when: limesurvey_deploy_config
+
+- name: Install systemd services
+  include: systemd.yml

@@ -1,0 +1,46 @@
+---
+# defaults file for e1mo.limesurvey
+limesurvey_path: '/var/www/limesurvey'
+limesurvey_user: 'www-data'
+limesurvey_group: 'www-data'
+
+limesurvey_git_repo: 'https://github.com/LimeSurvey/LimeSurvey.git'
+limesurvey_version: '3.x-LTS'
+
+limesurvey_db_type: 'mysql'  # mysql or pgsql
+limesurvey_db_name: 'limesurvey'
+limesurvey_db_host: 'localhost'
+limesurvey_db_port: '{{ "3306" if limesurvey_db_type == "mysql" else "5432" }}'
+limesurvey_db_user: 'limesurvey'
+limesurvey_db_pass: ''
+limesurvey_db_charset: '{{ "utf8mb4" if limesurvey_db_type == "mysql" else "utf8" }}'
+limesurvey_db_table_prefix: 'lime_'
+
+limesurvey_deploy_config: true
+
+limesurvey_site_name: 'LimeSurvey'
+limesurvey_site_admin_name: 'LimeSurvey Admin'
+limesurvey_site_admin_mail: 'admin@survey.example.com'
+limesurvey_force_ssl: false
+
+
+# https://manual.limesurvey.org/Optional_settings#Email_settings
+limesurvey_email_method: 'mail'  # mail, sendmail, smtp
+limesurvey_email_smtp_host: ''
+limesurvey_email_smtp_user: ''
+limesurvey_email_smtp_pass: ''
+limesurvey_email_smtp_ssl: 'tls'  # ssl / tls / <empty>
+limesurvey_email_max_mails: '30'  # ssl / tls / <empty>
+
+limesurvey_bounces_enabled: false
+limesurvey_bounce_host: '{{ limesurvey_email_smtp_host }}'
+limesurvey_bounce_type: 'IMAP'
+limesurvey_bounce_user: '{{ limesurvey_email_smtp_user }}'
+limesurvey_bounce_pass: '{{ limesurvey_email_smtp_pass }}'
+limesurvey_bounce_encryption: '{{ limesurvey_email_smtp_ssl }}'
+limesurvey_site_admin_bounce: '{{ limesurvey_bounce_user }}'
+
+limesurvey_extra_config: []
+
+limesurvey_systemd_enabled: true
+limesurvey_systemd_unit_name: 'limesurvey'

@@ -1,0 +1,24 @@
+---
+- name: Template systemd timer
+  template:
+    src: 'limesurvey.{{ item }}.j2'
+    dest: '/etc/systemd/system/{{ limesurvey_systemd_unit_name }}.{{ item }}'
+    mode: '644'
+  with_items:
+    - service
+    - timer
+  notify:
+    - systemd daemon reload
+    - systemd enable now timer
+  when: limesurvey_systemd_enabled
+
+- name: remove sytemd timer
+  file:
+    path: '/etc/systemd/sytem/{{ limesurvey_systemd_unit_name }}.{{ item }}'
+    sate: absent
+  with_items:
+    - service
+    - timer
+  notify:
+    - systemd daemon reload
+  when: not limesurvey_systemd_enabled

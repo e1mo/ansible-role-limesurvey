@@ -1,0 +1,20 @@
+- name: Create LimeSurvey folder
+  file:
+    path: '{{ limesurvey_path }}'
+    owner: '{{ limesurvey_user }}'
+    group: '{{ limesurvey_group }}'
+    state: directory
+
+- name: Download LimeSurvey source via git
+  git:
+    repo: '{{ limesurvey_git_repo }}'
+    version: '{{ limesurvey_version }}'
+    dest: '{{ limesurvey_path }}'
+    clone: true
+    update: true
+    depth: 1  # A full clone would be arround 1GB...
+  become: true
+  become_user: '{{ limesurvey_user }}'
+  notify:
+    - limesurvey install
+    - clear limesurvey cache
